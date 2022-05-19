@@ -9,3 +9,6 @@
 <li>Выполнить GET запрос <i>/balance/getBalance/{userId}</i></li>
 <li>Выполнить GET запрос <i>/balance/putMoney/{userId}/{amount}</i></li>
 <li>Выполнить GET запрос <i>/balance/takeMoney/{userId}/{amount}</i></li>
+<hr>
+<h2>ER + Структура БД</h2>
+<img src="ER_plus_structure.png" width="300" height="300" alt="ER_plus_structure">
