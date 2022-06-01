@@ -43,8 +43,15 @@ public final class Balance {
         }
     }
 
-    public List<OperationsEntity> getOperations(String user_id) {
-        OperationsEntityDao operationsEntityDao = new OperationsEntityDao();
-        return operationsEntityDao.findByUserId(user_id);
+    public StringBuilder getOperations(String walletId, String fromDate, String toDate) {
+        StringBuilder response = new StringBuilder();
+        List<OperationsEntity> operations = new OperationsEntityDao().findByWalletId(walletId, fromDate, toDate);
+        for (OperationsEntity operation : operations) {
+            response.append("Date: ").append(operation.getCreated_at())
+                    .append(", Type: ").append(operation.getType_id())
+                    .append(", Amount: ").append(operation.getAmount())
+                    .append(System.lineSeparator());
+        }
+        return response;
     }
 }

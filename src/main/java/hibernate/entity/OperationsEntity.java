@@ -13,7 +13,7 @@ public class OperationsEntity {
     private Integer type_id;
     @CreationTimestamp
     @Column(name = "created_at")
-    private Timestamp createdAt;
+    private Timestamp created_at;
     private Long amount;
 
     @Id
@@ -58,6 +58,14 @@ public class OperationsEntity {
         this.amount = amount;
     }
 
+    public Timestamp getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Timestamp created_at) {
+        this.created_at = created_at;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,7 +74,7 @@ public class OperationsEntity {
         OperationsEntity that = (OperationsEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
+        if (created_at != null ? !created_at.equals(that.created_at) : that.created_at != null) return false;
         if (amount != null ? !amount.equals(that.amount) : that.amount != null) return false;
 
         return true;
@@ -75,7 +83,7 @@ public class OperationsEntity {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (created_at != null ? created_at.hashCode() : 0);
         result = 31 * result + (amount != null ? amount.hashCode() : 0);
         return result;
     }
@@ -86,7 +94,7 @@ public class OperationsEntity {
                 "id=" + id +
                 ", wallet_id=" + wallet_id +
                 ", type_id=" + type_id +
-                ", createdAt=" + createdAt +
+                ", createdAt=" + created_at +
                 ", amount=" + amount +
                 '}';
     }

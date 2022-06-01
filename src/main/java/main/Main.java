@@ -1,18 +1,12 @@
 package main;
 
-import hibernate.entity.OperationsEntity;
-
 public class Main {
 
     public static void main(String[] args) {
         Balance balance = new Balance();
-//        System.out.println("getBalance " + balance.getBalance("1"));
-//        System.out.println("putMoney " + balance.putMoney("1", 5000L));
-//        System.out.println("takeMoney " + balance.takeMoney("1", 1200L));
-//        System.out.println("getBalance " + balance.getBalance("1"));
-//        balance.getBalance("1");
-        for (OperationsEntity operation: balance.getOperations("1")){
-            System.out.println(operation.toString());
-        }
+        System.out.println("getOperationsList " + balance.getOperations("1", "2022-05-30", "2022-06-02"));
+        System.out.println("getOperationsList " + balance.getOperations("1", "2022-05-30", null));
+        System.out.println("getOperationsList " + balance.getOperations("1", null, "2022-06-02"));
+        System.out.println("getOperationsList " + balance.getOperations("1", null, null));
     }
 }

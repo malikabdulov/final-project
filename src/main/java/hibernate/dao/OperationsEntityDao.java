@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
+import java.util.Date;
 import java.util.List;
 
 public class OperationsEntityDao {
@@ -89,13 +90,28 @@ public class OperationsEntityDao {
         return operations;
     }
 
+    @SuppressWarnings("unchecked")
+    public List<OperationsEntity> findByWalletId(String walletId, String fromDate, String toDate) {
+        this.openCurrentSession();
+        String hql = "from OperationsEntity where wallet_id = :wallet_id ";
+        if (fromDate != null){
+            hql = hql + "and created_at > '" + fromDate + "' ";
+        }
+        if (toDate != null){
+            hql = hql + "and created_at < '" + toDate + "' ";
+        }
+
+        List<OperationsEntity> operations = (List<OperationsEntity>) getCurrentSession().createQuery(hql).setParameter("wallet_id", walletId).list();
+        this.closeCurrentSession();
+        return operations;
+    }
 
     @SuppressWarnings("unchecked")
-    public List<OperationsEntity> findByUserId(String userId) {
+    public List<OperationsEntity> findByWalletId(String walletId) {
         this.openCurrentSession();
         String hql = "from OperationsEntity where wallet_id = :wallet_id";
 
-        List<OperationsEntity> operations = (List<OperationsEntity>) getCurrentSession().createQuery(hql).setParameter("wallet_id", userId).list();
+        List<OperationsEntity> operations = (List<OperationsEntity>) getCurrentSession().createQuery(hql).setParameter("wallet_id", walletId).list();
         this.closeCurrentSession();
         return operations;
     }
