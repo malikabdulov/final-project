@@ -2,19 +2,20 @@ package hibernate.dao;
 
 import java.util.List;
 
-import hibernate.entity.BalanceEntity;
+import hibernate.entity.OperationsEntity;
+import hibernate.entity.WalletsEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-public class BalanceEntityDao {
+public class WalletsEntityDao {
 
     private Session currentSession;
 
     private Transaction currentTransaction;
 
-    public BalanceEntityDao() {
+    public WalletsEntityDao() {
     }
 
     public Session openCurrentSession() {
@@ -22,7 +23,7 @@ public class BalanceEntityDao {
         return currentSession;
     }
 
-    public Session openCurrentSessionwithTransaction() {
+    public Session openCurrentSessionWithTransaction() {
         currentSession = getSessionFactory().openSession();
         currentTransaction = currentSession.beginTransaction();
         return currentSession;
@@ -32,16 +33,17 @@ public class BalanceEntityDao {
         currentSession.close();
     }
 
-    public void closeCurrentSessionwithTransaction() {
+    public void closeCurrentSessionWithTransaction() {
         currentTransaction.commit();
         currentSession.close();
     }
 
     private static SessionFactory getSessionFactory() {
         SessionFactory sessionFactory = new Configuration()
-            .addAnnotatedClass(BalanceEntity.class)
-            .configure()
-            .buildSessionFactory();
+                .addAnnotatedClass(WalletsEntity.class)
+                .addAnnotatedClass(OperationsEntity.class)
+                .configure()
+                .buildSessionFactory();
         return sessionFactory;
     }
 
@@ -61,32 +63,32 @@ public class BalanceEntityDao {
         this.currentTransaction = currentTransaction;
     }
 
-    public void persist(BalanceEntity entity) {
+    public void persist(WalletsEntity entity) {
         getCurrentSession().persist(entity);
     }
 
-    public void update(BalanceEntity entity) {
+    public void update(WalletsEntity entity) {
         getCurrentSession().update(entity);
     }
 
-    public BalanceEntity findById(String id) {
-        BalanceEntity balanceEntity = (BalanceEntity) getCurrentSession().get(BalanceEntity.class, id);
-        return balanceEntity;
+    public WalletsEntity findById(String id) {
+        WalletsEntity walletsEntity = (WalletsEntity) getCurrentSession().get(WalletsEntity.class, id);
+        return walletsEntity;
     }
 
-    public void delete(BalanceEntity entity) {
+    public void delete(WalletsEntity entity) {
         getCurrentSession().delete(entity);
     }
 
     @SuppressWarnings("unchecked")
-    public List<BalanceEntity> findAll() {
-        List<BalanceEntity> balances = (List<BalanceEntity>) getCurrentSession().createQuery("from BalanceEntity").list();
+    public List<WalletsEntity> findAll() {
+        List<WalletsEntity> balances = (List<WalletsEntity>) getCurrentSession().createQuery("from WalletsEntity").list();
         return balances;
     }
 
     public void deleteAll() {
-        List<BalanceEntity> entityList = findAll();
-        for (BalanceEntity entity : entityList) {
+        List<WalletsEntity> entityList = findAll();
+        for (WalletsEntity entity : entityList) {
             delete(entity);
         }
     }

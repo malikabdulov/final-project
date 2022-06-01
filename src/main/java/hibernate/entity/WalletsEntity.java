@@ -1,14 +1,13 @@
 package hibernate.entity;
 
 import jakarta.persistence.*;
-
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "balance", schema = "bank_api", catalog = "postgres")
-public class BalanceEntity {
+@Table(name = "wallets", schema = "bank_api", catalog = "postgres")
+public class WalletsEntity {
     private Integer id;
-    private Integer userId;
     private Long balance;
 
     @Id
@@ -20,17 +19,6 @@ public class BalanceEntity {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-
-    @Basic
-    @Column(name = "user_id")
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     @Basic
@@ -51,16 +39,25 @@ public class BalanceEntity {
         this.setBalance(this.getBalance() - delta);
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BalanceEntity that = (BalanceEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(userId, that.userId) && Objects.equals(balance, that.balance);
+
+        WalletsEntity that = (WalletsEntity) o;
+
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(balance, that.balance)) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, balance);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (balance != null ? balance.hashCode() : 0);
+        return result;
     }
 }
