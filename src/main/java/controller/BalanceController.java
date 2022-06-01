@@ -1,43 +1,36 @@
 package controller;
 
-import hibernate.entity.OperationsEntity;
-import org.springframework.stereotype.Controller;
+import json.GetBalanceJson;
+import json.GetOperationListJson;
+import json.PutMoneyJson;
+import json.TakeMoneyJson;
 import org.springframework.web.bind.annotation.*;
 import main.Balance;
 
-import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/balance")
 public class BalanceController {
 
     @GetMapping("/getBalance/{userId}")
-    @ResponseBody
-    public String getBalance(@PathVariable String userId) {
-        Long response = new Balance().getBalance(userId);
-        return "Result = " + response;
+    public GetBalanceJson getBalance(@PathVariable String userId) {
+        return new Balance().getBalance(userId);
     }
 
     @GetMapping("/putMoney/{userId}/{amount}")
-    @ResponseBody
-    public String putMoney(@PathVariable String userId, @PathVariable Long amount) {
-        Long response = new Balance().putMoney(userId, amount);
-        return "Result = " + response;
+    public PutMoneyJson putMoney(@PathVariable String userId, @PathVariable Long amount) {
+        return new Balance().putMoney(userId, amount);
     }
 
     @GetMapping("/takeMoney/{userId}/{amount}")
-    @ResponseBody
-    public String takeMoney(@PathVariable String userId, @PathVariable Long amount) {
-        Long response = new Balance().takeMoney(userId, amount);
-        return "Result = " + response;
+    public TakeMoneyJson takeMoney(@PathVariable String userId, @PathVariable Long amount) {
+        return new Balance().takeMoney(userId, amount);
     }
 
     @GetMapping("/getOperationList/{userId}")
-    @ResponseBody
-    public StringBuilder getOperationList(@PathVariable String userId,
-                                   @RequestParam(required = false) String fromDate,
-                                   @RequestParam(required = false) String toDate) {
-        StringBuilder response = new Balance().getOperations(userId, fromDate, toDate);
-        return response;
+    public GetOperationListJson getOperationList(@PathVariable String userId,
+                                                 @RequestParam(required = false) String fromDate,
+                                                 @RequestParam(required = false) String toDate) {
+        return new Balance().getOperations(userId, fromDate, toDate);
     }
 }

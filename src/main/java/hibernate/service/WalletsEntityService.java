@@ -5,6 +5,9 @@ import hibernate.dao.WalletsEntityDao;
 import hibernate.entity.OperationsEntity;
 import hibernate.entity.WalletsEntity;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 public class WalletsEntityService {
 
     private static WalletsEntityDao walletsEntityDao;
@@ -40,6 +43,7 @@ public class WalletsEntityService {
         OperationsEntity operationsEntity = new OperationsEntity();
         operationsEntity.setAmount(delta);
         operationsEntity.setType_id(1);
+        operationsEntity.setCreated_at(new Timestamp(new Date().getTime()));
         operationsEntity.setWallet_id(walletsEntity.getId());
         walletsEntity.increaseBalance(delta);
         this.update(walletsEntity, operationsEntity);
@@ -49,6 +53,7 @@ public class WalletsEntityService {
         OperationsEntity operationsEntity = new OperationsEntity();
         operationsEntity.setAmount(delta);
         operationsEntity.setType_id(2);
+        operationsEntity.setCreated_at(new Timestamp(new Date().getTime()));
         operationsEntity.setWallet_id(walletsEntity.getId());
         walletsEntity.decreaseBalance(delta);
         this.update(walletsEntity, operationsEntity);
