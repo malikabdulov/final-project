@@ -32,6 +32,16 @@ public class WalletsEntityService {
         walletsEntityDao.closeCurrentSessionWithTransaction();
     }
 
+    public void update(WalletsEntity walletsEntity1, OperationsEntity operationsEntity1, WalletsEntity walletsEntity2, OperationsEntity operationsEntity2) {
+        walletsEntityDao.openCurrentSessionWithTransaction();
+        operationsEntityDao.setCurrentSession(walletsEntityDao.getCurrentSession());
+        operationsEntityDao.persist(operationsEntity1);
+        walletsEntityDao.update(walletsEntity1);
+        operationsEntityDao.persist(operationsEntity2);
+        walletsEntityDao.update(walletsEntity2);
+        walletsEntityDao.closeCurrentSessionWithTransaction();
+    }
+
     public WalletsEntity findById(String id) {
         walletsEntityDao.openCurrentSession();
         WalletsEntity walletsEntity = walletsEntityDao.findById(id);
@@ -57,5 +67,22 @@ public class WalletsEntityService {
         operationsEntity.setWallet_id(walletsEntity.getId());
         walletsEntity.decreaseBalance(delta);
         this.update(walletsEntity, operationsEntity);
+    }
+
+    public void transferMoney(WalletsEntity sender, WalletsEntity recipient, Long delta) {
+        OperationsEntity operationsEntitySender = new OperationsEntity();
+        operationsEntitySender.setAmount(delta);
+        operationsEntitySender.setType_id(3);
+        operationsEntitySender.setCreated_at(new Timestamp(new Date().getTime()));
+        operationsEntitySender.setWallet_id(sender.getId());
+        sender.decreaseBalance(delta);
+
+        OperationsEntity operationsEntityReceiver = new OperationsEntity();
+        operationsEntityReceiver.setAmount(delta);
+        operationsEntityReceiver.setType_id(4);
+        operationsEntityReceiver.setCreated_at(new Timestamp(new Date().getTime()));
+        operationsEntityReceiver.setWallet_id(recipient.getId());
+        recipient.increaseBalance(delta);
+        this.update(sender, operationsEntitySender, recipient, operationsEntityReceiver);
     }
 }
