@@ -4,13 +4,11 @@ import hibernate.dao.OperationsEntityDao;
 import hibernate.entity.OperationsEntity;
 import hibernate.entity.WalletsEntity;
 import hibernate.service.WalletsEntityService;
-import json.GetBalanceJson;
-import json.GetOperationListJson;
-import json.PutMoneyJson;
-import json.TakeMoneyJson;
+import json.*;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 public final class Balance {
     WalletsEntityService walletsEntityService = new WalletsEntityService();
@@ -49,6 +47,31 @@ public final class Balance {
         if (walletsEntity != null) {
             if (walletsEntity.getBalance() >= amount) {
                 walletsEntityService.decreaseBalance(walletsEntity, amount);
+                response.setStatus(1);
+                response.setMessage("OK");
+            } else {
+                response.setStatus(0);
+                response.setMessage("Not enough balance");
+            }
+        } else {
+            response.setStatus(0);
+            response.setMessage("User not found");
+        }
+        return response;
+    }
+
+    public TransferMoneyJson transferMoney(String sender_id, String recipient_id, Long amount) {
+        TransferMoneyJson response = new TransferMoneyJson();
+        if (sender_id.equals(recipient_id)) {
+            response.setStatus(0);
+            response.setMessage("The sender cannot be the recipient");
+            return response;
+        }
+        WalletsEntity sender = walletsEntityService.findById(sender_id);
+        WalletsEntity recipient = walletsEntityService.findById(recipient_id);
+        if (sender != null && recipient != null) {
+            if (sender.getBalance() >= amount) {
+                walletsEntityService.transferMoney(sender, recipient, amount);
                 response.setStatus(1);
                 response.setMessage("OK");
             } else {

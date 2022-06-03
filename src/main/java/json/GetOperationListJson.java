@@ -35,10 +35,20 @@ public class GetOperationListJson {
         }
 
         public void setOperationType(int operationType) {
-            if (operationType == 1) {
-                this.operationType = "Put money";
-            } else if (operationType == 2) {
-                this.operationType = "Take money";
+
+            switch (operationType) {
+                case (1):
+                    this.operationType = "Put money";
+                    break;
+                case (2):
+                    this.operationType = "Take money";
+                    break;
+                case (3):
+                    this.operationType = "Transfer out";
+                    break;
+                case (4):
+                    this.operationType = "Transfer in";
+                    break;
             }
         }
 

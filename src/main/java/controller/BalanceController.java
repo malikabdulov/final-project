@@ -1,9 +1,6 @@
 package controller;
 
-import json.GetBalanceJson;
-import json.GetOperationListJson;
-import json.PutMoneyJson;
-import json.TakeMoneyJson;
+import json.*;
 import org.springframework.web.bind.annotation.*;
 import main.Balance;
 
@@ -32,5 +29,12 @@ public class BalanceController {
                                                  @RequestParam(required = false) String fromDate,
                                                  @RequestParam(required = false) String toDate) {
         return new Balance().getOperations(userId, fromDate, toDate);
+    }
+
+    @GetMapping("/transferMoney/{senderId}/{recipientId}/{amount}")
+    public TransferMoneyJson transferMoney(@PathVariable String senderId,
+                                           @PathVariable String recipientId,
+                                           @PathVariable Long amount) {
+        return new Balance().transferMoney(senderId, recipientId, amount);
     }
 }
